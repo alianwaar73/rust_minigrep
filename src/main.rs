@@ -7,22 +7,31 @@ fn main() {
     // Print out the values contained in args
     dbg!(&args);
 
-    let (query, file_path) = parse_config(&args);
+    let config = Config::new(&args);
 
-    println!("Input query: {query}\n");
-    println!("Path to file: {file_path}\n");
-
+    println!("Input query: {}", config.query);
+    println!("Path to file: {}", config.file_path);
     println!("Containing contents:\n");
 
-    let content = fs::read_to_string(file_path)
-        .expect(&format!("Should have been able to read the file specified: {file_path}"));
+    let content = fs::read_to_string(config.file_path)
+        .expect("Should have been able to read the file specified.");
 
     println!("{content}");
 }
 
-fn parse_config(args: &[String]) -> (&str, &str) {
-    let query = &args[1];
-    let file_path = &args[2];
+// Structure for Config type
+struct Config {
+    query: String,
+    file_path: String,
+}
 
-    (query, file_path)
+// Creating the constructor for CLI argument parsing 
+// Config
+impl Config {
+    fn new(args: &[String]) -> Config {
+        let query = args[1].clone();
+        let file_path = args[2].clone();
+
+        Config { query, file_path }
+    }
 }
