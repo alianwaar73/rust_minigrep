@@ -6,7 +6,7 @@
 [![Lint: clippy](https://img.shields.io/badge/lint-clippy-green?logo=rust)](https://github.com/rust-lang/rust-clippy)
 [![Style: rustfmt](https://img.shields.io/badge/style-rustfmt-blue?logo=rust)](https://github.com/rust-lang/rustfmt)
 
-A tiny, learning‑oriented reimplementation of grep in Rust. The CLI reads a file and prints lines that contain a query string. Work in progress.
+A tiny, learning‑oriented reimplementation of grep in Rust. Currently echoes the query and file path, then prints the file contents. Search/filtering will be added as the project evolves.
 
 ## Quick Start
 
@@ -16,6 +16,20 @@ A tiny, learning‑oriented reimplementation of grep in Rust. The CLI reads a fi
 - Check types: `cargo check`
 - Test: `cargo test`
 - Format/Lint: `cargo fmt --all` and `cargo clippy --all-targets --all-features`
+
+## Usage
+
+Example run against a file `poem.txt`:
+
+```
+cargo run -- to poem.txt
+
+Input query: to
+Path to file: poem.txt
+Containing contents:
+
+<file contents are printed here>
+```
 
 ## Project Layout
 
@@ -31,6 +45,16 @@ A tiny, learning‑oriented reimplementation of grep in Rust. The CLI reads a fi
 - Prefer `Result<T, E>` and `?` to bubble errors; avoid panics on user I/O.
 - Validate CLI args and handle missing/permission errors gracefully.
 
+## Contributing
+
+See `CONTRIBUTING.md` for commit/PR conventions, testing guidance, and tooling. Small improvements and learning notes are welcome.
+
+## Changelog
+
+See `CHANGELOG.md` for a history of notable documentation and code updates with commit references.
+
 ## Status
 
-This is a learning project and is actively evolving. Suggestions and small PRs are welcome.
+This is a learning project and is actively evolving. Search logic is not yet implemented; current binary focuses on argument parsing and file I/O.
+
+— README created/updated by codex-cli
