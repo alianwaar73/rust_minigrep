@@ -1,13 +1,17 @@
 use std::env;
 use std::fs;
+use std::process;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
     
-    // Print out the values contained in args
-    dbg!(&args);
+    // Uncomment the following flag to print out the values contained in args
+    // dbg!(&args);
 
-    let config = Config::new(&args);
+    let config = Config::build(&args).unwrap_or_else(|err| {
+        println!("Problem parsing input arguments: {err}");
+        process::exit(1);
+    });
 
     println!("Input query: {}", config.query);
     println!("Path to file: {}", config.file_path);
@@ -25,13 +29,17 @@ struct Config {
     file_path: String,
 }
 
-// Creating the constructor for CLI argument parsing 
-// Config
+// Creating the constructor Config for CLI argument parsing 
 impl Config {
-    fn new(args: &[String]) -> Config {
+
+    fn build(args: &[String]) -> Result<Config, &'static str> {
+        if args.len() < 3 {
+            return Err("Not enough input arguments provided.");
+        }
+
         let query = args[1].clone();
         let file_path = args[2].clone();
 
-        Config { query, file_path }
+        Ok(Config { query, file_path })
     }
 }
