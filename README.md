@@ -46,16 +46,16 @@ Errors print a short, user-friendly message to stderr and exit non‑zero.
 
 ## Project Layout
 
-- `src/main.rs`: Minimal binary entrypoint; parses args and delegates to library.
-- `src/lib.rs`: Library crate exposing `Config` and `run()` used by `main` and tests.
+- [`src/main.rs`](src/main.rs): Minimal binary entrypoint; parses args and delegates to library.
+- [`src/lib.rs`](src/lib.rs): Library crate exposing `Config` and `run()` used by `main` and tests.
 - `tests/`: Integration tests using the public API.
 - `tests/fixtures/`: Test input files.
 - `target/`: Build artifacts (ignored by Git).
 
 ## Architecture
 
-- `main.rs`: Keeps I/O and argument handling thin; prints a short header and calls `minigrep::run(config)`. On errors, it prints a friendly message and exits non‑zero. This follows the guidance in `AGENTS.md` to keep `main` minimal.
-- `lib.rs`: Owns core types and logic:
+- [`main.rs`](src/main.rs): Keeps I/O and argument handling thin; prints a short header and calls `minigrep::run(config)`. On errors, it prints a friendly message and exits non‑zero. This follows the guidance in [`AGENTS.md`](AGENTS.md) to keep `main` minimal.
+- [`lib.rs`](src/lib.rs): Owns core types and logic:
   - `pub struct Config { query, file_path }`
   - `impl Config { pub fn build(args: &[String]) -> Result<Config, &'static str> }`
   - `pub fn run(config: Config) -> Result<(), Box<dyn Error>>`
@@ -63,18 +63,18 @@ Errors print a short, user-friendly message to stderr and exit non‑zero.
 
 ## Rust Project Structure (Brief)
 
-- `Cargo.toml`: Package metadata, edition, dependencies, and binary targets; source of truth for Cargo.
-- `Cargo.lock`: Exact, resolved dependency versions for reproducible builds (commit for apps; regenerate for libraries).
-- `src/main.rs`: Binary crate entry point with `fn main()` that delegates to the library.
-- `src/lib.rs`: Library crate for reusable logic and a public API used by both `main` and tests.
+- [`Cargo.toml`](Cargo.toml): Package metadata, edition, dependencies, and binary targets; source of truth for Cargo.
+- [`Cargo.lock`](Cargo.lock): Exact, resolved dependency versions for reproducible builds (commit for apps; regenerate for libraries).
+- [`src/main.rs`](src/main.rs): Binary crate entry point with `fn main()` that delegates to the library.
+- [`src/lib.rs`](src/lib.rs): Library crate for reusable logic and a public API used by both `main` and tests.
 - `tests/`: Integration tests compiled as separate crates that exercise the public API.
 - `tests/fixtures/`: Sample input files used by tests.
 - `target/`: Build outputs (`debug/`, `release/`, incremental); ignored by Git.
-- `README.md`: Project overview, usage, and layout.
-- `CHANGELOG.md`: Human-readable history with commit/diff references explaining what changed and why.
-- `CONTRIBUTING.md`: Contribution, style, and tooling guidelines.
-- `.gitignore`: Ignore patterns (e.g., `target/`).
-- `AGENTS.md`: Notes on using codex-cli in this repo.
+- [`README.md`](README.md): Project overview, usage, and layout.
+- [`CHANGELOG.md`](CHANGELOG.md): Human-readable history with commit/diff references explaining what changed and why.
+- [`CONTRIBUTING.md`](CONTRIBUTING.md): Contribution, style, and tooling guidelines.
+- [`.gitignore`](.gitignore): Ignore patterns (e.g., `target/`).
+- [`AGENTS.md`](AGENTS.md): Notes on using codex-cli in this repo.
 - Optional (not present here): `examples/` (runnable samples), `benches/` (benchmarks), `build.rs` (build script), `.cargo/config.toml` (tooling/workspace config), CI files.
 
 ## Build Artifacts and `target/`
@@ -129,7 +129,7 @@ See `CONTRIBUTING.md` for commit/PR conventions, testing guidance, and tooling. 
 
 ## Changelog
 
-See `CHANGELOG.md` for a history of notable documentation and code updates with commit references.
+See [`CHANGELOG.md`](CHANGELOG.md) for a history of notable documentation and code updates with commit references.
 
 ## Status
 
