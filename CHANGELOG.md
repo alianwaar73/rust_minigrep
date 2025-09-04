@@ -2,6 +2,10 @@
 
 All notable changes to this project are documented here. This is a learning project; entries include brief reasoning and links to commits when available.
 
+## 2025-09-04
+- Docs: Add "Rust Project Structure (Brief)" to README covering `Cargo.toml`, `Cargo.lock`, `src/main.rs`, `src/lib.rs`, `tests/`, `tests/fixtures/`, `target/`, and repo docs (`README.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, `AGENTS.md`). Rationale: provide a concise Rust-specific orientation to the repository layout and standard project conventions. Diff: see README.md changes in this change set (commit to be referenced upon merge) and run `git diff -- README.md` locally to review.
+- Docs: Expand README with detailed `target/` subdirectories and common artifact filetypes (`.o`, `.d`, `.rlib`, `.rmeta`, `.a`, `.so/.dylib/.dll`, executables, debug symbols) plus a brief build→link→run lifecycle. Rationale: clarify what Cargo/rustc generate from compilation to execution and where to find outputs. Diff: compare README before/after this entry.
+
 ## 2025-09-03
 - Docs: Expand README with accurate current behavior, usage example, contributing and changelog pointers; add badges. Rationale: keep docs truthful to current binary (prints file contents, search WIP). See commit `570869f` for the initial README addition.
 - Docs: Add CONTRIBUTING.md summarizing coding, testing, and PR conventions.
