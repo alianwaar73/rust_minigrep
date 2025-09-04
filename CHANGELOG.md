@@ -7,6 +7,10 @@ All notable changes to this project are documented here. This is a learning proj
 - Docs: Expand README with detailed `target/` subdirectories and common artifact filetypes (`.o`, `.d`, `.rlib`, `.rmeta`, `.a`, `.so/.dylib/.dll`, executables, debug symbols) plus a brief build→link→run lifecycle. Rationale: clarify what Cargo/rustc generate from compilation to execution and where to find outputs. Diff: compare README before/after this entry.
 - Docs: Add explicit `src/main.rs` history summary below to satisfy project guideline of documenting version history of the entrypoint.
 
+- Docs: Enrich README with new sections: Installation (cargo install and release build paths), Exit Codes (0 on success; 1 on CLI/runtime error), and Roadmap (search, case-insensitive mode, move logic to lib, tests). Rationale: clarify usage, behavior, and planned direction. Diff: see README changes in this commit; `git diff -- README.md`.
+
+- Code/Structure: Introduce `src/lib.rs` exposing `Config` and `run()`, and refactor `src/main.rs` to delegate to the library, keeping `main` minimal per `AGENTS.md`. Rationale: enable testing of core logic and improve separation of concerns. See diff for `src/main.rs` and new `src/lib.rs` in this change.
+
 ### src/main.rs history (recent)
 - 0676f4a: Introduce `run(config) -> Result` and switch file I/O to use `Result` with `?`, removing `expect`; add `std::error::Error` and propagate errors to `main` with graceful exit. Rationale: avoid panics on user-controlled I/O and align with guideline to prefer `Result<T, E>`.
 - 96fe626: Harden CLI parsing: replace `Config::new` returning a value with `Config::build` returning `Result<_, &'static str>`; use `unwrap_or_else` in `main` to print a helpful message and exit non-zero. Also gate `dbg!(&args)` behind a comment. Rationale: clearer UX and safer argument handling.

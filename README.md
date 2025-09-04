@@ -17,6 +17,12 @@ A tiny, learning‑oriented reimplementation of grep in Rust. Currently echoes t
 - Test: `cargo test`
 - Format/Lint: `cargo fmt --all` and `cargo clippy --all-targets --all-features`
 
+## Installation
+
+- From source (local install): `cargo install --path .`
+- Build release binary: `cargo build --release` (binary at `target/release/minigrep`)
+- Run from workspace: `cargo run -- <query> <file>`
+
 ## Usage
 
 Example run against a file `poem.txt`:
@@ -31,19 +37,35 @@ Containing contents:
 <file contents are printed here>
 ```
 
+## Exit Codes
+
+- 0: Successful execution.
+- 1: CLI parsing error or runtime error (e.g., cannot read file).
+
+Errors print a short, user-friendly message to stderr and exit non‑zero.
+
 ## Project Layout
 
-- `src/main.rs`: Binary entrypoint with minimal CLI wiring.
-- `src/lib.rs`: Shared logic as code grows beyond `main`.
+- `src/main.rs`: Minimal binary entrypoint; parses args and delegates to library.
+- `src/lib.rs`: Library crate exposing `Config` and `run()` used by `main` and tests.
 - `tests/`: Integration tests using the public API.
 - `tests/fixtures/`: Test input files.
 - `target/`: Build artifacts (ignored by Git).
+
+## Architecture
+
+- `main.rs`: Keeps I/O and argument handling thin; prints a short header and calls `minigrep::run(config)`. On errors, it prints a friendly message and exits non‑zero. This follows the guidance in `AGENTS.md` to keep `main` minimal.
+- `lib.rs`: Owns core types and logic:
+  - `pub struct Config { query, file_path }`
+  - `impl Config { pub fn build(args: &[String]) -> Result<Config, &'static str> }`
+  - `pub fn run(config: Config) -> Result<(), Box<dyn Error>>`
+  This separation enables unit tests on `lib` and keeps the CLI thin.
 
 ## Rust Project Structure (Brief)
 
 - `Cargo.toml`: Package metadata, edition, dependencies, and binary targets; source of truth for Cargo.
 - `Cargo.lock`: Exact, resolved dependency versions for reproducible builds (commit for apps; regenerate for libraries).
-- `src/main.rs`: Binary crate entry point with `fn main()`; keep minimal and delegate to library code.
+- `src/main.rs`: Binary crate entry point with `fn main()` that delegates to the library.
 - `src/lib.rs`: Library crate for reusable logic and a public API used by both `main` and tests.
 - `tests/`: Integration tests compiled as separate crates that exercise the public API.
 - `tests/fixtures/`: Sample input files used by tests.
@@ -93,6 +115,13 @@ Note: Exact layout and presence of files vary by OS, Rust/Cargo versions, enable
 - Follows Rust 2024 edition conventions; 4‑space indentation.
 - Prefer `Result<T, E>` and `?` to bubble errors; avoid panics on user I/O.
 - Validate CLI args and handle missing/permission errors gracefully.
+
+## Roadmap
+
+- Add substring search with line/number output.
+- Case-insensitive mode (likely via `IGNORE_CASE=1`).
+- Move logic from `main` into `src/lib.rs` with a public API.
+- Add unit + integration tests and fixtures under `tests/`.
 
 ## Contributing
 
