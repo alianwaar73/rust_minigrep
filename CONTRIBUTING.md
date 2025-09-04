@@ -36,3 +36,5 @@ Thanks for your interest in this learning project. Contributions that clarify co
 - Update `CHANGELOG.md` with notable changes and commit references.
 
 Happy hacking!
+
+— CONTRIBUTING created/updated by codex-cli
