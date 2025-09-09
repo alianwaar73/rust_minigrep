@@ -6,7 +6,7 @@
 [![Lint: clippy](https://img.shields.io/badge/lint-clippy-green?logo=rust)](https://github.com/rust-lang/rust-clippy)
 [![Style: rustfmt](https://img.shields.io/badge/style-rustfmt-blue?logo=rust)](https://github.com/rust-lang/rustfmt)
 
-A tiny, learning‑oriented reimplementation of grep in Rust. Currently echoes the query and file path, then prints the file contents. Search/filtering will be added as the project evolves.
+A tiny, learning‑oriented reimplementation of grep in Rust. It parses CLI args, reads a file, and prints only the lines that contain the query (case‑sensitive search).
 
 ## Quick Start
 
@@ -32,9 +32,9 @@ cargo run -- to poem.txt
 
 Input query: to
 Path to file: poem.txt
-Containing contents:
-
-<file contents are printed here>
+Rust:
+safe, fast, productive.
+Pick three.
 ```
 
 ## Exit Codes
@@ -59,7 +59,8 @@ Errors print a short, user-friendly message to stderr and exit non‑zero.
   - `pub struct Config { query, file_path }`
   - `impl Config { pub fn build(args: &[String]) -> Result<Config, &'static str> }`
   - `pub fn run(config: Config) -> Result<(), Box<dyn Error>>`
-  This separation enables unit tests on `lib` and keeps the CLI thin.
+  - `pub fn search(query: &str, contents: &str) -> Vec<&str>`
+  `run` reads the file and prints each line returned by `search`. This separation enables unit tests on `lib` and keeps the CLI thin.
 
 ## Rust Project Structure (Brief)
 
@@ -118,10 +119,10 @@ Note: Exact layout and presence of files vary by OS, Rust/Cargo versions, enable
 
 ## Roadmap
 
-- Add substring search with line/number output.
-- Case-insensitive mode (likely via `IGNORE_CASE=1`).
-- Move logic from `main` into `src/lib.rs` with a public API.
-- Add unit + integration tests and fixtures under `tests/`.
+- Add line numbers and file name in output.
+- Case-insensitive mode (e.g., `IGNORE_CASE=1`).
+- Add integration tests under `tests/` with fixtures.
+- Support regex or whole‑word matches as optional modes.
 
 ## Contributing
 

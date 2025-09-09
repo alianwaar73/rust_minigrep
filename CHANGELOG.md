@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here. This is a learning project; entries include brief reasoning and links to commits when available.
 
+## 2025-09-09
+- Code: Finish basic search pipeline. `run` now filters and prints only matching lines via `search()` instead of dumping the entire file (commit [`92652ab`](https://github.com/alianwaar73/rust_minigrep/commit/92652ab)). Rationale: make the binary behave like a minimal grep.
+  - Diff focus: `src/lib.rs` changed the `run` loop to iterate `search(&config.query, &content)` and `println!("{line}")` for each match.
+- Code: Introduce `search(query, contents) -> Vec<&str>` with a unit test demonstrating a simple substring match (commit [`916788f`](https://github.com/alianwaar73/rust_minigrep/commit/916788f)). Rationale: enable TDD on search behavior and keep logic in the library.
+- Docs: Update README usage and overview to reflect case‑sensitive searching and removal of the extra "Containing contents:" header. Rationale: keep docs accurate to current output.
+
+### src/main.rs history (delta)
+- [`92652ab`](https://github.com/alianwaar73/rust_minigrep/commit/92652ab): Remove `println!("Containing contents:\n")`; `main` now prints the query and file path, then delegates to `run`, which prints only matching lines. This aligns user‑visible output with the new search behavior.
+- [`363d3a4`](https://github.com/alianwaar73/rust_minigrep/commit/363d3a4): Earlier refactor kept `main` minimal, delegating to the library. No CLI surface changes since then besides the removal above.
+
 ## 2025-09-04
 - Docs: Add "Rust Project Structure (Brief)" to README covering `Cargo.toml`, `Cargo.lock`, `src/main.rs`, `src/lib.rs`, `tests/`, `tests/fixtures/`, `target/`, and repo docs (`README.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, `AGENTS.md`). Rationale: provide a concise Rust-specific orientation to the repository layout and standard project conventions. Diff: see README.md changes in this change set (commit to be referenced upon merge) and run `git diff -- README.md` locally to review.
 - Docs: Expand README with detailed `target/` subdirectories and common artifact filetypes (`.o`, `.d`, `.rlib`, `.rmeta`, `.a`, `.so/.dylib/.dll`, executables, debug symbols) plus a brief build→link→run lifecycle. Rationale: clarify what Cargo/rustc generate from compilation to execution and where to find outputs. Diff: compare README before/after this entry.
