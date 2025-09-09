@@ -28,14 +28,30 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+// Taking the TDD: Test-driven development
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn build_rejects_missing_args() {
-        let args = vec!["bin".to_string()];
-        assert!(Config::build(&args).is_err());
+    fn one_result() {
+        let query = "ick";
+        let contents = "\
+Rust:
+safe, fast, productive.
+Pick three.";
+
+        assert_eq!(vec!["Pick three."], search(query, contents));
     }
 }
 
+// [ ] <'a> in the below defines the lifecyle
+pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
+    let mut results = Vec::new();
+    for line in contents.lines() {
+        if line.contains(query) {
+            results.push(line);
+        }
+    }
+    results
+}
