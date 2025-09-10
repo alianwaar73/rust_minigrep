@@ -2,6 +2,25 @@
 
 All notable changes to this project are documented here. This is a learning project; entries include brief reasoning and links to commits when available.
 
+## 2025-09-10
+- Docs: Update [`README.md`](README.md) to reflect current behavior:
+  - Clarify default case‑sensitive search and `IGNORE_CASE` for case‑insensitive mode.
+  - Add concrete usage examples for both modes and align sample output with [`src/main.rs`](src/main.rs) printing only matching lines.
+  - Update Architecture to include `ignore_case` in `Config` and document `search_case_insensitive` in [`src/lib.rs`](src/lib.rs).
+  - Refresh Status and Roadmap to mark case‑insensitive search available via env var and note future CLI flags.
+  Rationale: keep docs truthful to implemented features and CLI UX.
+- Code: No source changes in this revision; behavior remains as in prior commits.
+
+### src/main.rs history (delta)
+- No code changes since [`92652ab`](https://github.com/alianwaar73/rust_minigrep/commit/92652ab). Current `main` collects args, builds `Config` with `unwrap_or_else` error handling, prints the query and file path, and delegates to `minigrep::run(config)`; on error, prints a friendly message and exits non‑zero.
+
+### src/lib.rs history (delta)
+- [`3d67322`](https://github.com/alianwaar73/rust_minigrep/commit/3d67322): Add case‑insensitive search via `search_case_insensitive` and plumb `IGNORE_CASE` env var through `Config { ignore_case }` to `run`. Rationale: enable grep‑like `-i` behavior by environment flag for now.
+- [`92652ab`](https://github.com/alianwaar73/rust_minigrep/commit/92652ab): Wire `run` to iterate matches from `search(&config.query, &contents)` and print only matching lines. Rationale: switch from dumping full file to grep‑style filtered output.
+- [`916788f`](https://github.com/alianwaar73/rust_minigrep/commit/916788f): Introduce `search(query, contents) -> Vec<&str>` and add a unit test for a basic substring match. Rationale: establish a testable core API for search.
+- [`363d3a4`](https://github.com/alianwaar73/rust_minigrep/commit/363d3a4): Extract core logic from `main` into new `src/lib.rs` exposing `Config` and `run`. Rationale: keep `main` minimal and enable library‑level testing.
+- [`1f3eb7a`](https://github.com/alianwaar73/rust_minigrep/commit/1f3eb7a): Further separation of concerns between `main.rs` and `lib.rs`. Rationale: continue refactor to stabilize public API.
+
 ## 2025-09-09
 - Code: Finish basic search pipeline. `run` now filters and prints only matching lines via `search()` instead of dumping the entire file (commit [`92652ab`](https://github.com/alianwaar73/rust_minigrep/commit/92652ab)). Rationale: make the binary behave like a minimal grep.
   - Diff focus: `src/lib.rs` changed the `run` loop to iterate `search(&config.query, &content)` and `println!("{line}")` for each match.

@@ -16,7 +16,9 @@
 - Within each documentation file such as README.md or CHANGELOG.md, always use appropriate hyperlinks for inter-/intra-file referencing such as when referencing commit hashes, file names, and such format them into hyperlinks for easy navigation from within a given documentation file.
 - For the CHANGELOG.md in particular, always refer to git commits and diffs to explain what changed in the code and why.
     - For this learning project, in particular, CHANGELOG.md should be updated with explanations around code changes.
-    - For this project, in particular, the CHANGELOG.md must reference the version history of src/main.rs file contents and briefly summarize the code changes from the previous version into the CHANGELOG.md
+    - For this project, in particular, the CHANGELOG.md must reference the version history of `src/main.rs` file contents and briefly summarize the code changes from the previous version into the CHANGELOG.md.
+    - Additionally, document significant code changes across the entire codebase, not just `src/main.rs`. Include per‑file history subsections (e.g., `src/lib.rs history`) with brief deltas and hyperlink commit references.
+    - Always consult the git history to detect, track, and document significant code changes across modules (e.g., `src/lib.rs`, tests, configuration). Prefer linking to commits and diffs for traceability.
 
 ## Build, Test, and Development Commands
 - `cargo build`:

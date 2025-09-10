@@ -6,7 +6,7 @@
 [![Lint: clippy](https://img.shields.io/badge/lint-clippy-green?logo=rust)](https://github.com/rust-lang/rust-clippy)
 [![Style: rustfmt](https://img.shields.io/badge/style-rustfmt-blue?logo=rust)](https://github.com/rust-lang/rustfmt)
 
-A tiny, learning‑oriented reimplementation of grep in Rust. It parses CLI args, reads a file, and prints only the lines that contain the query (case‑sensitive search).
+A tiny, learning‑oriented reimplementation of grep in Rust. It parses CLI args, reads a file, and prints only the lines that contain the query. Search is case‑sensitive by default and can be toggled to case‑insensitive via the `IGNORE_CASE` environment variable.
 
 ## Quick Start
 
@@ -27,14 +27,27 @@ A tiny, learning‑oriented reimplementation of grep in Rust. It parses CLI args
 
 Example run against a file `poem.txt`:
 
+Default (case‑sensitive):
+
 ```
 cargo run -- to poem.txt
 
 Input query: to
 Path to file: poem.txt
-Rust:
-safe, fast, productive.
-Pick three.
+to sleep, perchance to dream
+not TO BE, but to become
+```
+
+Case‑insensitive via env var:
+
+```
+IGNORE_CASE=1 cargo run -- to poem.txt
+
+Input query: to
+Path to file: poem.txt
+to sleep, perchance to dream
+TO SEE OR NOT TO SEE
+not TO BE, but to become
 ```
 
 ## Exit Codes
@@ -56,11 +69,11 @@ Errors print a short, user-friendly message to stderr and exit non‑zero.
 
 - [`main.rs`](src/main.rs): Keeps I/O and argument handling thin; prints a short header and calls `minigrep::run(config)`. On errors, it prints a friendly message and exits non‑zero. This follows the guidance in [`AGENTS.md`](AGENTS.md) to keep `main` minimal.
 - [`lib.rs`](src/lib.rs): Owns core types and logic:
-  - `pub struct Config { query, file_path }`
-  - `impl Config { pub fn build(args: &[String]) -> Result<Config, &'static str> }`
+  - `pub struct Config { query, file_path, ignore_case }`
+  - `impl Config { pub fn build(args: &[String]) -> Result<Config, &'static str> }` (reads `IGNORE_CASE` env var)
   - `pub fn run(config: Config) -> Result<(), Box<dyn Error>>`
-  - `pub fn search(query: &str, contents: &str) -> Vec<&str>`
-  `run` reads the file and prints each line returned by `search`. This separation enables unit tests on `lib` and keeps the CLI thin.
+  - `pub fn search(query: &str, contents: &str) -> Vec<&str>` and `pub fn search_case_insensitive(query: &str, contents: &str) -> Vec<&str>`
+  `run` reads the file and prints each matching line using the appropriate search function based on `ignore_case`. This separation enables unit tests on `lib` and keeps the CLI thin.
 
 ## Rust Project Structure (Brief)
 
@@ -116,13 +129,14 @@ Note: Exact layout and presence of files vary by OS, Rust/Cargo versions, enable
 - Follows Rust 2024 edition conventions; 4‑space indentation.
 - Prefer `Result<T, E>` and `?` to bubble errors; avoid panics on user I/O.
 - Validate CLI args and handle missing/permission errors gracefully.
+- Case‑insensitive search is enabled by setting `IGNORE_CASE` in the environment.
 
 ## Roadmap
 
 - Add line numbers and file name in output.
-- Case-insensitive mode (e.g., `IGNORE_CASE=1`).
 - Add integration tests under `tests/` with fixtures.
 - Support regex or whole‑word matches as optional modes.
+- Add CLI flags to override env var (e.g., `--ignore-case/--case-sensitive`).
 
 ## Contributing
 
@@ -134,6 +148,6 @@ See [`CHANGELOG.md`](CHANGELOG.md) for a history of notable documentation and co
 
 ## Status
 
-This is a learning project and is actively evolving. Search logic is not yet implemented; current binary focuses on argument parsing and file I/O.
+This is a learning project and is actively evolving. Basic grep behavior is implemented (search with optional case‑insensitivity via `IGNORE_CASE`).
 
 — README created/updated by codex-cli
