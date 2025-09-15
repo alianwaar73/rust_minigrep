@@ -10,7 +10,7 @@ fn main() {
     // dbg!(&args);
 
     let config = Config::build(&args).unwrap_or_else(|err| {
-        println!("Problem parsing input arguments: {err}");
+        eprintln!("Problem parsing input arguments: {err}");
         process::exit(1);
     });
 
@@ -18,7 +18,7 @@ fn main() {
     println!("Path to file: {}", config.file_path);
 
     if let Err(e) = minigrep::run(config) {
-        println!("Application errored: {e}");
+        eprintln!("Application errored: {e}");
         process::exit(1);
     }
 }
