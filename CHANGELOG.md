@@ -2,9 +2,19 @@
 
 All notable changes to this project are documented here. This is a learning project; entries include brief reasoning and links to commits when available.
 
+## 2025-09-16
+- Docs: Extend [`README.md`](README.md) with an explicit **Error Handling** section highlighting how matches stay on stdout while diagnostics head to stderr (see [`src/main.rs`](src/main.rs)). The example demonstrates redirecting stderr without losing search results. Rationale: capture the behavior introduced when `main` adopted `eprintln!` for failure paths and teach users how to script around it.
+- Code reference: [`2163a69`](https://github.com/alianwaar73/rust_minigrep/commit/2163a69dbc62709ffc3e97705f078c2531f5a642) swapped the `println!` calls for `eprintln!` in [`src/main.rs`](src/main.rs), aligning error reporting with Unix CLI conventions and enabling the doc update above.
+
+### src/main.rs history (delta)
+- [`2163a69`](https://github.com/alianwaar73/rust_minigrep/commit/2163a69dbc62709ffc3e97705f078c2531f5a642): Route parse/runtime diagnostics through `eprintln!` so they surface on stderr while successful matches continue on stdout. This change keeps output script-friendly and is now documented in the README.
+
+### src/lib.rs history (delta)
+- No changes since [`3d67322`](https://github.com/alianwaar73/rust_minigrep/commit/3d6732295120d27aaf97d01372447bc2ecd421c0); library behavior remains the same while documentation caught up with CLI ergonomics.
+
 ## 2025-09-10
 - Docs: Update [`README.md`](README.md) to reflect current behavior:
-  - Clarify default case‑sensitive search and `IGNORE_CASE` for case‑insensitive mode.
+  - Clarify default case-sensitive search and `IGNORE_CASE` for case-insensitive mode.
   - Add concrete usage examples for both modes and align sample output with [`src/main.rs`](src/main.rs) printing only matching lines.
   - Update Architecture to include `ignore_case` in `Config` and document `search_case_insensitive` in [`src/lib.rs`](src/lib.rs).
   - Refresh Status and Roadmap to mark case‑insensitive search available via env var and note future CLI flags.

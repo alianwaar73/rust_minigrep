@@ -38,7 +38,7 @@ to sleep, perchance to dream
 not TO BE, but to become
 ```
 
-Case‑insensitive via env var:
+Case-insensitive via env var:
 
 ```
 IGNORE_CASE=1 cargo run -- to poem.txt
@@ -49,6 +49,19 @@ to sleep, perchance to dream
 TO SEE OR NOT TO SEE
 not TO BE, but to become
 ```
+
+### Error Handling
+
+Matches are written to stdout while diagnostics are emitted on stderr via the `eprintln!` calls in [`src/main.rs`](src/main.rs). This keeps search results clean and lets you redirect messages separately:
+
+```
+cargo run -- to 2> errors.log
+cat errors.log
+
+Problem parsing input arguments: Not enough input arguments provided.
+```
+
+Missing files behave the same way; the `Application errored: ...` message lands on stderr, so piping stdout still yields only matched lines.
 
 ## Exit Codes
 
