@@ -4,10 +4,18 @@ use std::process;
 use minigrep::Config;
 
 fn main() {
-    let config = Config::build(env::args()).unwrap_or_else(|err| {
-        eprintln!("Problem parsing input arguments: {err}");
-        process::exit(1);
-    });
+    let config = match Config::build(env::args()) {
+        Ok(config) => config,
+        Err(err) => {
+            if err == Config::usage() {
+                println!("{err}");
+                return;
+            }
+
+            eprintln!("Problem parsing input arguments: {err}");
+            process::exit(1);
+        }
+    };
 
     println!("Input query: {}", config.query);
     println!("Path to file: {}", config.file_path);

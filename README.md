@@ -50,6 +50,21 @@ TO SEE OR NOT TO SEE
 not TO BE, but to become
 ```
 
+Show the built-in help/usage text (exits with code 0):
+
+```
+cargo run -- --help
+
+Usage: minigrep [OPTIONS] <query> <file_path>
+
+OPTIONS:
+    -i, --ignore-case       Search without case sensitivity or when IGNORE_CASE is set.
+    -I, --no-ignore-case    Force case-sensitive search even if IGNORE_CASE is set.
+    -n, --line-number       Prefix matches with their line number.
+```
+
+`minigrep --help` uses the same path and prints to stdout, skipping the error handler in [`src/main.rs`](src/main.rs#L7) so scripts can pipe diagnostics separately from help text.
+
 ### Error Handling
 
 Matches are written to stdout while diagnostics are emitted on stderr via the `eprintln!` calls in [`src/main.rs`](src/main.rs). This keeps search results clean and lets you redirect messages separately:
@@ -65,7 +80,7 @@ Missing files behave the same way; the `Application errored: ...` message lands 
 
 ## Exit Codes
 
-- 0: Successful execution.
+- 0: Successful execution (includes `--help`).
 - 1: CLI parsing error or runtime error (e.g., cannot read file).
 
 Errors print a short, user-friendly message to stderr and exit non‑zero.

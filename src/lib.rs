@@ -83,7 +83,7 @@ impl Config {
         })
     }
 
-    fn usage() -> String {
+    pub fn usage() -> String {
         "Usage: minigrep [OPTIONS] <query> <file_path>\n\nOPTIONS:\n    -i, --ignore-case       Search without case sensitivity or when IGNORE_CASE is set.\n    -I, --no-ignore-case    Force case-sensitive search even if IGNORE_CASE is set.\n    -n, --line-number       Prefix matches with their line number.\n".to_string()
     }
 }

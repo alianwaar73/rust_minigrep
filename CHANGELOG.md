@@ -2,6 +2,19 @@
 
 All notable changes to this project are documented here. This is a learning project; entries include brief reasoning and links to commits when available.
 
+## 2025-09-22
+- Code: Treat `-h/--help` as a success path so usage text prints to stdout and exits with status 0 while other parse errors continue to surface on stderr. See [compare/a7170e2...HEAD](https://github.com/alianwaar73/rust_minigrep/compare/a7170e200ef125690be532bde2ec2cd81013ae83...HEAD); this addresses the CLI regression called out in review by short-circuiting inside [`src/main.rs`](src/main.rs).
+- Docs: Extend [`README.md`](README.md) with a help invocation example and updated exit code guidance so users understand that `minigrep --help` succeeds. See [compare/a7170e2...HEAD](https://github.com/alianwaar73/rust_minigrep/compare/a7170e200ef125690be532bde2ec2cd81013ae83...HEAD).
+
+### src/main.rs history (delta)
+- [compare/a7170e2...HEAD](https://github.com/alianwaar73/rust_minigrep/compare/a7170e200ef125690be532bde2ec2cd81013ae83...HEAD): Match `Config::build` failures, treat the usage string as a help response, print it to stdout, and return without exiting non-zero.
+
+### src/lib.rs history (delta)
+- [compare/a7170e2...HEAD](https://github.com/alianwaar73/rust_minigrep/compare/a7170e200ef125690be532bde2ec2cd81013ae83...HEAD): Expose `Config::usage()` publicly so the binary crate can recognize help requests without duplicating the banner.
+
+### README.md history (delta)
+- [compare/a7170e2...HEAD](https://github.com/alianwaar73/rust_minigrep/compare/a7170e200ef125690be532bde2ec2cd81013ae83...HEAD): Add the `cargo run -- --help` walkthrough and note that exit code 0 covers the help path.
+
 ## 2025-09-16
 - Docs: Extend [`README.md`](README.md) with an explicit **Error Handling** section highlighting how matches stay on stdout while diagnostics head to stderr (see [`src/main.rs`](src/main.rs)). The example demonstrates redirecting stderr without losing search results. Rationale: capture the behavior introduced when `main` adopted `eprintln!` for failure paths and teach users how to script around it.
 - Code reference: [`2163a69`](https://github.com/alianwaar73/rust_minigrep/commit/2163a69dbc62709ffc3e97705f078c2531f5a642) swapped the `println!` calls for `eprintln!` in [`src/main.rs`](src/main.rs), aligning error reporting with Unix CLI conventions and enabling the doc update above.
